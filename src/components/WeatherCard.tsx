@@ -21,7 +21,7 @@ class WeatherCard extends React.Component<Props> {
   deleteDataFromLocalStorage() {
     // var retrievedObject = localStorage.getItem("cityList");
     // const existingCities = JSON.parse(retrievedObject != null ? retrievedObject : "");
-    const existingCities = JSON.parse(localStorage.getItem("cityList") || '{}');
+    const existingCities = JSON.parse(localStorage.getItem("cityList") || "{}");
     const indexOfCity = existingCities.indexOf(this.props.weatherData.city);
 
     existingCities.splice(indexOfCity, 1);
@@ -32,7 +32,7 @@ class WeatherCard extends React.Component<Props> {
   saveDataToLocalStorage() {
     // Get data from LocalStorage if there is any and push back with new city
     //const existingCities = JSON.parse(localStorage.getItem("cityList")) || [];
-    const existingCities = JSON.parse(localStorage.getItem("cityList") || '[]');
+    const existingCities = JSON.parse(localStorage.getItem("cityList") || "[]");
 
     existingCities.push(this.props.weatherData.city);
     localStorage.setItem("cityList", JSON.stringify(existingCities));

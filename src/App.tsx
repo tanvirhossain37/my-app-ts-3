@@ -55,14 +55,11 @@ class App extends Component {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         //this.reverseGeocoding(position.coords.latitude, position.coords.longitude);
-        console.log("position.coords.latitude", position.coords.latitude);
-        console.log("position.coords.longitude", position.coords.longitude);
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=034a228bf950af8c9eef368a69f8a99d&lang=en`;
         fetch(url)
           .then(handleErrors)
           .then((resp) => resp.json())
           .then((data) => {
-            console.log("data", data);
             const weatherObj = {
               weather: data.weather,
               city: data.name,
@@ -116,8 +113,6 @@ class App extends Component {
           searchDone: true,
           errorMessage: "",
         });
-
-        console.log("city data", data);
       })
       .catch((error) => {
         // If an error is catch, it's sent to SearchBar as props
