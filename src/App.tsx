@@ -43,12 +43,11 @@ class App extends Component {
   };
 
   constructor(props: any) {
-    super(props);
-
-    this.getLocation();
+    super(props);    
 
     this.callWeatherData = this.callWeatherData.bind(this);
     this.updateSavedCities = this.updateSavedCities.bind(this);
+    this.getLocation = this.getLocation.bind(this);
   }
 
   getLocation() {
@@ -113,6 +112,8 @@ class App extends Component {
           searchDone: true,
           errorMessage: "",
         });
+
+        console.log("data", data);
       })
       .catch((error) => {
         // If an error is catch, it's sent to SearchBar as props
@@ -159,8 +160,9 @@ class App extends Component {
       <div className="App">
         <SearchBar
           callBackFromParent={this.callWeatherData}
+          callBackForGeoLocation={this.getLocation}
           error={errorMessage}
-        />
+        />        
         {searchDone && (
           <WeatherCard
             weatherData={weatherData}

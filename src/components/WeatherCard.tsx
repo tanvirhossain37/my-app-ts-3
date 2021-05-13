@@ -16,6 +16,7 @@ class WeatherCard extends React.Component<Props> {
     this.saveDataToLocalStorage = this.saveDataToLocalStorage.bind(this);
     this.deleteDataFromLocalStorage =
       this.deleteDataFromLocalStorage.bind(this);
+    this.downloadFile = this.downloadFile.bind(this);
   }
 
   deleteDataFromLocalStorage() {
@@ -39,6 +40,49 @@ class WeatherCard extends React.Component<Props> {
     this.props.callBackFromParent(existingCities);
   }
 
+  downloadFile() {
+    const { city, weather, country, temp } = this.props.weatherData;
+    const celcius = Math.round(temp - 273.15);
+    const content = `${country}, ${celcius}°, ${weather[0].main}`;
+
+    const byteString = window.atob(
+      window.btoa(content)
+    );
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+
+    let blob = new Blob([int8Array]);
+
+    // IE doesn't allow using a blob object directly as link href
+    // instead it is necessary to use msSaveOrOpenBlob
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob);
+      return;
+    }
+
+    // For other browsers:
+    // Create a link pointing to the ObjectURL containing the blob.
+    const data = window.URL.createObjectURL(blob);
+
+    var link = document.createElement("a");
+    link.href = data;
+
+    link.download = "Weather Data.txt";
+    // this is necessary as link.click() does not work on the latest firefox
+    link.dispatchEvent(
+      new MouseEvent("click", { bubbles: true, cancelable: true, view: window })
+    );
+
+    setTimeout(function () {
+      // For Firefox it is necessary to delay revoking the ObjectURL
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+  }
+
   render() {
     const { city, weather, country, temp } = this.props.weatherData;
     const celcius = Math.round(temp - 273.15);
@@ -58,6 +102,14 @@ class WeatherCard extends React.Component<Props> {
         content="Delete from favorites"
       />
     );
+    const saveFileBtn = (
+      <Button
+        positive
+        size="mini"
+        onClick={this.downloadFile}
+        content="Save file"
+      />
+    );
     const existingCities = this.props.savedCities;
 
     return (
@@ -71,6 +123,7 @@ class WeatherCard extends React.Component<Props> {
           {city}, {country}
         </h2>
         {existingCities.includes(city) ? deleteBtn : saveBtn}
+        {saveFileBtn}
       </div>
     );
   }

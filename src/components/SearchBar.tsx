@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Form, Input, Message } from "semantic-ui-react";
+import { Button, Form, Input, Message } from "semantic-ui-react";
 import "../css/SearchBar.css";
 //import { Input, Message, Form } from "semantic-ui-react";
 
 export interface Props {
   callBackFromParent: (city: string) => void;
+  callBackForGeoLocation: () => void;
   error: string;
 }
 
@@ -23,6 +24,7 @@ class SearchBar extends React.Component<Props, State> {
 
     this.handleChange = this.handleChange.bind(this);
     this.sendValueToParent = this.sendValueToParent.bind(this);
+    this.getWeather = this.getWeather.bind(this);
   }
 
   handleChange(event: any) {
@@ -42,6 +44,10 @@ class SearchBar extends React.Component<Props, State> {
       this.props.callBackFromParent(this.state.value);
       this.setState({ warning: false });
     }
+  }
+
+  getWeather(event: any) {
+    this.props.callBackForGeoLocation();
   }
 
   render() {
@@ -68,6 +74,9 @@ class SearchBar extends React.Component<Props, State> {
             autoFocus
           />
         </Form>
+        <Button className="ui icon button" onClick={this.getWeather}>
+          <i aria-hidden="true" className="location arrow icon"></i>
+        </Button>
       </div>
     );
   }
