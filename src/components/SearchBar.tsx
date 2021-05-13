@@ -74,7 +74,7 @@ class SearchBar extends React.Component<Props, State> {
             autoFocus
           />
         </Form>
-        <Button className="ui icon button" onClick={this.getWeather}>
+        <Button className="ui icon button location-button" onClick={this.getWeather}>
           <i aria-hidden="true" className="location arrow icon"></i>
         </Button>
       </div>

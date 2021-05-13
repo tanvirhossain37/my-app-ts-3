@@ -7,6 +7,10 @@
   width: 30rem;
 }
 
+.location-button {
+  margin-top: 10px !important;
+}
+
 .SearchBar .message {
   width: 20rem;
   margin: 0 auto 2rem;
